@@ -9,7 +9,7 @@ import scipy.sparse as smat
 
 import torch
 from torch import nn
-from torch.optim import AdamW
+from transformers import AdamW, get_linear_schedule_with_warmup
 from torch.utils.data import TensorDataset, DataLoader
 
 from transformers import BertTokenizer, BertConfig, BertModel
@@ -17,7 +17,7 @@ from transformers import RobertaModel, RobertaConfig, RobertaTokenizer
 from transformers import XLNetTokenizer, XLNetModel, XLNetConfig
 from tokenizers import BertWordPieceTokenizer
 from torch.utils.data import Dataset
-# from transformers import RobertaTokenizerFast
+from transformers import RobertaTokenizerFast
 from tqdm import tqdm
 from cores.Ranker import Ranker
 from cores.Matcher import Matcher
@@ -136,7 +136,7 @@ class Model(nn.Module):
         ]
 
         optimizer = AdamW(optimizer_grouped_parameters)
-        scheduler = AdamW.get_linear_schedule_with_warmup(optimizer, num_warmup_steps=args.warmup_steps,
+        scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=args.warmup_steps,
                                                     num_training_steps=t_total)
         model.to('cuda')
         amp.initialize(model, optimizer, opt_level="O1")
@@ -218,7 +218,6 @@ class Model(nn.Module):
         out_Y_pre_path = os.path.join(args.output_data_dir, "Y_pre")
         smat.save_npz(out_Y_pre_path, smat.csr_matrix(Y_pre))
 
-        # #Matche# #
         if args.is_maGCN:
             matcher = Matcher(args)
             matcher.load_state_dict(torch.load(f'save/{args.dataset}/Matcher-{args.exp_name}-model.bin'))

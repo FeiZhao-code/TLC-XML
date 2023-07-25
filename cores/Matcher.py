@@ -6,7 +6,7 @@ import tqdm
 import time
 import cProfile
 import numpy as np
-# from apex import amp
+from apex import amp
 import pickle
 import scipy.sparse as smat
 
@@ -102,7 +102,7 @@ class Matcher(nn.Module):
             {"params": [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)],
              "weight_decay": 0.0, },
         ]
-        epochs = 1 #args.epochs // 2
+        epochs = args.epochs // 2
         optimizer = AdamW(optimizer_grouped_parameters, lr=1e-4)
         t_total = len(trainload) // args.gradient_accumulation_steps * epochs
         scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=args.warmup_steps,
