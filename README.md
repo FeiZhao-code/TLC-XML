@@ -1,5 +1,5 @@
 # TLC-XML
-[TLC-XML: Transformer with Label Correlation for Extreme Multi-label Text Classification](https://)
+[TLC-XML: Transformer with Label Correlation for Extreme Multi-label Text Classification](https://link.springer.com/article/10.1007/s11063-024-11460-z)
 
 ## Requirements
 
